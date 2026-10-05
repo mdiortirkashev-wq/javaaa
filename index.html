@@ -3,51 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zamonaviy Илонча Ўйини</title>
+    <title data-i18n="site_title">NeonGame - Zamonaviy O‘yinlar Portali</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="game-container">
-        <!-- Юқори қисм: Баллар ва Бошқарув -->
-        <header class="game-header">
-            <h1>ИЛОНЧА</h1>
-            <div class="score-board">
-                <div class="score-box">Бал: <span id="current-score">0</span></div>
-                <div class="score-box">Рекорд: <span id="best-score">0</span></div>
-            </div>
-        </header>
 
-        <!-- Ўйин майдони ва Экранолди ҳолатлар -->
-        <div class="board-wrapper">
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <!-- Navigatsiya paneli -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#" class="logo"><i class="fa-solid fa-gamepad"></i> Neon<span>Game</span></a>
             
-            <!-- Бошланиш ва Ўйин тугади экранлари -->
-            <div id="startScreen" class="overlay-screen">
-                <h2>Илонча Ўйинига Хуш Келибсиз!</h2>
-                <p>Бошлаish учун тугмани босинг</p>
-                <button id="startBtn" class="btn primary-btn">Бошлаш</button>
+            <nav class="navbar" id="navbar">
+                <a href="#bosh-sahifa" class="nav-link active" data-i18n="nav_home">Bosh sahifa</a>
+                <a href="#oyinlar" class="nav-link" data-i18n="nav_games">O‘yinlar</a>
+                <a href="#kategoriyalar" class="nav-link" data-i18n="nav_categories">Kategoriyalar</a>
+                <a href="#biz-haqimizda" class="nav-link" data-i18n="nav_about">Biz haqimizda</a>
+            </nav>
+
+            <div class="header-right">
+                <!-- Til tanlash -->
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="uz">UZ</button>
+                    <button class="lang-btn" data-lang="kg">KG</button>
+                    <button class="lang-btn" data-lang="ru">RU</button>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero bo‘limi -->
+    <section class="hero" id="bosh-sahifa">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 data-i18n="hero_title">O‘yin olamiga xush kelibsiz!</h1>
+                <p data-i18n="hero_desc">Eng so‘nggi va qiziqarli neon o‘yinlarni kashf eting. O‘z mahoratingizni sinab ko‘ring va do‘stlar bilan raqobatlashing.</p>
+                <a href="#oyinlar" class="btn btn-primary" data-i18n="hero_btn">O‘yinlarni ko‘rish</a>
+            </div>
+            <div class="hero-image">
+                <div class="neon-glow-circle"></div>
+                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80" alt="Gaming Setup">
+            </div>
+        </div>
+    </section>
+
+    <!-- O‘yinlar bo‘limi -->
+    <section class="games-section container" id="oyinlar">
+        <div class="section-title">
+            <h2 data-i18n="games_title">Mashhur O‘yinlar</h2>
+            <p data-i18n="games_subtitle">O‘zingizga yoqqan yo‘nalishni tanlang va o‘ynashni boshlang</p>
+        </div>
+
+        <!-- Qidirish va Filtrlar -->
+        <div class="filter-search-wrapper" id="kategoriyalar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="O‘yin nomini qidirish...">
             </div>
 
-            <div id="gameOverScreen" class="overlay-screen hidden">
-                <h2>Ўйин Тугади!</h2>
-                <p>Сизнинг натижангиз: <span id="finalScore">0</span></p>
-                <button id="restartBtn" class="btn primary-btn">Қайтадан Бошлаш</button>
+            <div class="category-buttons">
+                <button class="filter-btn active" data-category="all" data-i18n="cat_all">Barchasi</button>
+                <button class="filter-btn" data-category="Sarguzasht" data-i18n="cat_adventure">Sarguzasht</button>
+                <button class="filter-btn" data-category="Poyga" data-i18n="cat_racing">Poyga</button>
+                <button class="filter-btn" data-category="Strategiya" data-i18n="cat_strategy">Strategiya</button>
+                <button class="filter-btn" data-category="Boshqotirma" data-i18n="cat_puzzle">Boshqotirma</button>
             </div>
         </div>
 
-        <!-- Бошқарув тугмалари -->
-        <div class="controls-panel">
-            <button id="pauseBtn" class="btn secondary-btn" disabled>Пауза</button>
-        </div>
+        <!-- O‘yin kartalari gridi -->
+        <div class="games-grid" id="gamesGrid"></div>
 
-        <!-- Мобил қурилмалар учун экрандаги стрелкалар -->
-        <div class="mobile-controls">
-            <button class="control-btn" id="upBtn">⬆️</button>
-            <div class="middle-controls">
-                <button class="control-btn" id="leftBtn">⬅️</button>
-                <button class="control-btn" id="rightBtn">➡️</button>
+        <!-- O'yin topilmagandagi xabar -->
+        <div class="no-results hidden" id="noResults">
+            <i class="fa-solid fa-ghost"></i>
+            <h3 data-i18n="no_results_title">Bu kategoriyada o‘yin topilmadi</h3>
+            <p data-i18n="no_results_desc">Boshqa kalit so'z yoki kategoriyani tanlab ko'ring.</p>
+        </div>
+    </section>
+
+    <!-- Biz haqimizda bo'limi -->
+    <section class="about-section container" id="biz-haqimizda">
+        <div class="about-card">
+            <h2 data-i18n="about_title">Biz Haqimizda</h2>
+            <p data-i18n="about_desc">NeonGame — bu zamonaviy veb o‘yinlar ixlosmandlari uchun maxsus yaratilgan platforma. Bizning maqsadimiz foydalanuvchilarga sifatli va qiziqarli o‘yinlarni taqdim etish hamda qulay o‘yin muhitini yaratishdir.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <a href="#" class="logo"><i class="fa-solid fa-gamepad"></i> Neon<span>Game</span></a>
+                <p data-i18n="footer_rights">&copy; 2026 Barcha huquqlar himoyalangan.</p>
             </div>
-            <button class="control-btn" id="downBtn">⬇️️</button>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#"><i class="fa-brands fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Oyna -->
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
